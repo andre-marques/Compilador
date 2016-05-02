@@ -16,7 +16,10 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -81,21 +84,26 @@ public class CompView {
 		btnC.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				String path = "entrada.txt";
-				
+				FileWriter arquivo;
 				try {
-					MeuScanner scan = new MeuScanner(path);
-					scan.leitura();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					
+					File f = new File("entrada.txt");
+					FileOutputStream fos = new FileOutputStream(f);  
+		            String texto = txtA_Origem.getText();  
+		            fos.write(texto.getBytes());  
+		            		            
+					MeuScanner scan = new MeuScanner(f.getPath());
+					String s = scan.leitura();
+					s = s.trim();
+					txtA_Destino.setText(s);
+					  
+					fos.close();
+					
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-				
-				txtA_Destino.setText(txtA_Origem.getText());
-				
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
 			}
 		});
 		btnC.setBounds(405, 285, 52, 52);
